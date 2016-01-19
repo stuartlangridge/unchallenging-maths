@@ -1,0 +1,65 @@
+<!doctype html>
+<html>
+<head>
+<style>
+#pf_plug_loading {
+    position: absolute;
+    top: 40%;
+    left: 0;
+    width: 100%;
+    color: #e44044;
+    font-size: 34px;
+    text-align: center;
+    font-family: sans-serif;
+    -webkit-transition: opacity 300ms ease;
+    transition: opacity 300ms ease;
+    opacity: 1;
+}
+#pf_plug_loading span {
+    display: block;
+    font-size: 8px;
+    color: #aaa;
+    letter-spacing: 3px;
+}
+</style>
+</head>
+<body>
+<p id="pf_plug_loading">Pollfish<span>component by sil</span></p>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script>
+var opts;
+try {
+    opts = JSON.parse(decodeURIComponent(location.hash.substr(1)));
+} catch(e) {
+    opts = {};
+}
+var pollfishConfig = {
+  api_key: null,
+  indicator_position: "BOTTOM_RIGHT",
+  debug: false,
+  uuid: null,
+  closeCallback: function() { document.title = "status:::surveyClosed" },
+  userNotEligibleCallback: function() { document.title = "status:::userNotEligible" },
+  closeAndNoShowCallback: function() { document.title = "status:::closeAndNoShow" },
+  surveyCompletedCallback: function() { document.title = "status:::surveyFinished" },
+  surveyAvailable: function() { document.title = "status:::surveyAvailable" },
+  ready: function() {
+    clearTimeout(abortTimeout);
+    document.getElementById("pf_plug_loading").style.opacity = "0";
+    if (!Pollfish.showFullSurvey()) {
+        document.title = "status:::noSurveyAvailableOnCall"
+    }
+  }
+};
+if (opts) {
+    for (var k in opts) {
+        pollfishConfig[k] = opts[k];
+    }
+}
+var abortTimeout = setTimeout(function() {
+    document.title = "status:::pollfishDidNotLoad";
+}, 4000);
+</script>
+<script src="https://storage.googleapis.com/pollfish_production/sdk/webplugin/pollfish.min.js"></script>
+</body>
+</html>

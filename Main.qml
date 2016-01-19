@@ -106,20 +106,48 @@ MainView {
                 horizontalAlignment: Text.AlignHCenter
             }
 
-            PollFish {
-                id: pollfish
+            Rectangle {
+                id: hint
                 anchors.top: pollhead.bottom
                 anchors.left: parent.left
                 anchors.right: parent.right
                 anchors.bottom: parent.bottom
                 anchors.topMargin: units.gu(2)
+                visible: false
 
-                api_key: "1a69b759-d42b-4d70-951b-c7efc0f08411"
-                onStatusChanged: {
-                    if (status === "surveyClosed") {
+                Label {
+                    id: actualhint
+                    text: "The answer is " + (root.num1 + root.num2)
+                    fontSize: "large"
+                    anchors.centerIn: parent
+                }
+                Button {
+                    text: "Close"
+                    anchors.top: actualhint.bottom
+                    anchors.topMargin: units.gu(1)
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    onClicked: {
+                        hint.visible = false;
                         mainStack.pop();
                     }
                 }
+
+            }
+
+            PollFish {
+                id: pollfish
+                api_key: "1a69b759-d42b-4d70-951b-c7efc0f08411"
+                onStatusChanged: {
+                    if (status === "noSurveyAvailableOnCall" || status === "surveyFinished") {
+                        pollfish.visible = false;
+                        hint.visible = true;
+                    }
+                }
+                anchors.top: pollhead.bottom
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.bottom: parent.bottom
+                anchors.topMargin: units.gu(2)
             }
         }
 
@@ -189,12 +217,15 @@ MainView {
 
             Button {
                 text: "Hint"
-                width: parent.width
+                width: (2 * parent.width / 3) + units.gu(3)
+                anchors.horizontalCenter: parent.horizontalCenter
                 font.pixelSize: 40
                 height: 80
                 onClicked: {
+                    pollfish.visible = true;
+                    hint.visible = false;
                     mainStack.push(poll);
-                    pollfish.begin();
+                    pollfish.begin({debug: true});
                 }
             }
         }
