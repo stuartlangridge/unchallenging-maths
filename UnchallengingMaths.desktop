@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=UnchallengingMaths
+Exec=qmlscene $@ Main.qml
+Icon=UnchallengingMaths.png
+Terminal=false
+Type=Application
+X-Ubuntu-Touch=true
+

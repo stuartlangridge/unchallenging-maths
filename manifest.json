@@ -1,0 +1,17 @@
+{
+    "name": "unchallengingmaths.sil",
+    "description": "description of UnchallengingMaths",
+    "architecture": "all",
+    "title": "UnchallengingMaths",
+    "hooks": {
+        "UnchallengingMaths": {
+            "apparmor": "UnchallengingMaths.apparmor",
+            "desktop":  "UnchallengingMaths.desktop"
+        }
+    },
+    "version": "0.1",
+    "maintainer": "Stuart Langridge <sil-launchpad@kryogenix.org>",
+    "framework" : "ubuntu-sdk-15.04"
+}
+
+
